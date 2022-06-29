@@ -1,0 +1,16 @@
+{
+  "entryFile": "src/main.ts",
+  "noImplicitAdditionalProperties": "silently-remove-extras",
+  "controllerPathGlobs": ["src/api/rest/controllers/*.controller.ts"],
+  "spec": {
+    "basePath": "/",
+    "outputDirectory": ".",
+    "specVersion": 3
+  },
+  "routes": {
+    "basePath": "/",
+    "iocModule": "src/infrastructure/configurations/container.ts",
+    "routesDir": "src/api/rest/routes",
+    "routesFileName": "swagger.routes.ts"
+  }
+}

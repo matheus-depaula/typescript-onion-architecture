@@ -1,0 +1,210 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"HttpSuccessStatusCode": {
+				"enum": [
+					200,
+					201,
+					204
+				],
+				"type": "number"
+			},
+			"HttpClientErrorStatusCode": {
+				"enum": [
+					400,
+					404
+				],
+				"type": "number"
+			},
+			"HttpServerErrorStatusCode": {
+				"enum": [
+					500
+				],
+				"type": "number"
+			},
+			"HttpStatusCode": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/HttpSuccessStatusCode"
+					},
+					{
+						"$ref": "#/components/schemas/HttpClientErrorStatusCode"
+					},
+					{
+						"$ref": "#/components/schemas/HttpServerErrorStatusCode"
+					}
+				]
+			},
+			"SuccessResult": {
+				"properties": {
+					"data": {},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/HttpSuccessStatusCode"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IErrorMessage": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"firstName",
+					"lastName",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "typescript-onion-architecture",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/health-check": {
+			"get": {
+				"operationId": "HealthCheck",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SuccessResult"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IErrorMessage"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Check API status",
+				"tags": [
+					"API"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user/{id}": {
+			"get": {
+				"operationId": "FindById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IErrorMessage"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IErrorMessage"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Find user by id",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
